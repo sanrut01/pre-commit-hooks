@@ -2,12 +2,11 @@
 
 """Checks each file in sys.argv for the string "DO NOT SUBMIT"."""
 
-import sys
-import os
 import subprocess
+import sys
 
 
-def err(s):
+def err(s: str) -> None:
     print(s, file=sys.stderr)
 
 
