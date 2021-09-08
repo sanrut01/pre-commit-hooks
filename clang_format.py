@@ -166,6 +166,7 @@ Learn more: https://github.com/jlebar/pre-commit-hooks
     return clang_format_file
 
 
+
 def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
     parser = argparse.ArgumentParser(description="Arguments for pre commit.")
     parser.add_argument(
