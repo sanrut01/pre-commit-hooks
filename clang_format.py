@@ -20,7 +20,7 @@ import sys
 import tempfile
 import urllib.request
 from pathlib import Path
-from typing import Final, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import Final, Mapping, Optional, Sequence, Tuple, Union
 
 # clang-format sha1s were retrieved at
 #  https://commondatastorage.googleapis.com/chromium-clang-format/
