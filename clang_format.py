@@ -29,7 +29,7 @@ from typing import Final, Literal, Mapping, Optional, Sequence, Tuple, Union
 CLANG_FORMAT_SHAS: Final[
     Mapping[
         Tuple[int, int, int],
-        Mapping[Union[Literal["Linux"], Literal["Darwin"], Literal["Windows"]], str],
+        Mapping[str, str],
     ]
 ] = {
     (3, 5, 0): {
