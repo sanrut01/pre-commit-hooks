@@ -20,7 +20,7 @@ import sys
 import tempfile
 import urllib.request
 from pathlib import Path
-from typing import Final, Mapping, Optional, Sequence, Tuple, Union
+from typing import Final, List, Mapping, Optional, Sequence, Tuple, Union
 
 # clang-format sha1s were retrieved at
 #  https://commondatastorage.googleapis.com/chromium-clang-format/
@@ -157,20 +157,21 @@ Learn more: https://github.com/jlebar/pre-commit-hooks
     return clang_format_file
 
 
+def get_version_list(
+    versionmap: Mapping[
+        Tuple[int, int, int],
+        Mapping[str, str],
+    ]
+) -> Tuple[str, ...]:
+    data = [tuple(map(str, tup)) for tup in versionmap.keys()]
+    return tuple([".".join(version) for version in data])
+
+
 def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
     parser = argparse.ArgumentParser(description="Arguments for pre commit.")
     parser.add_argument(
         "version",
-        choices=(
-            "3.5.0",
-            "3.6.0",
-            "3.7.0",
-            "3.9.0",
-            "4.0.0",
-            "5.0.0",
-            "8.0.0",
-            "11.0.0",
-        ),
+        choices=get_version_list(CLANG_FORMAT_SHAS),
         help="Clang format version to run",
     )
     parser.add_argument("scope", choices=["diff", "whole-file"], help="Run on files")
