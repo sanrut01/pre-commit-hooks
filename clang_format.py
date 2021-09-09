@@ -22,12 +22,9 @@ import urllib.request
 from pathlib import Path
 from typing import Final, Literal, Mapping, Optional, Sequence, Tuple, Union
 
-# clang-format sha1s were retrieved at Chromium rev
-# 81cc23a856578b149a37dd109b147d8544f9cbd8.
-#
-# https://github.com/chromium/chromium/blob/master/buildtools/linux64/clang-format.sha1
-# https://github.com/chromium/chromium/blob/master/buildtools/mac/clang-format.sha1
-# https://github.com/chromium/chromium/blob/master/buildtools/win/clang-format.exe.sha1
+# clang-format sha1s were retrieved at  
+#  https://commondatastorage.googleapis.com/chromium-clang-format/
+# The below shas are tested across different os to identify the version.
 
 CLANG_FORMAT_SHAS: Final[
     Mapping[
@@ -130,8 +127,7 @@ Expected {sha}, but was {d.hexdigest()}",
 
 def get_version_key(version: str) -> Tuple[int, int, int]:
     major, minor, patch = version.split(".")
-    v = (int(major), int(minor), int(patch))
-    return v
+    return  (int(major), int(minor), int(patch))
 
 
 def clang_format_path(version: Tuple[int, int, int]) -> Path:
