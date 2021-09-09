@@ -17,12 +17,13 @@
     entry: clang_format.py
     language: script
     args: ['11.0.0','diff']
+    require_serial: true
+
 
     # git-clang-format does not take kindly to being run in parallel; it writes
     # to a speicfic file in .git.
     #
     # TODO: Can we fix git-clang-format so it's parallel-friendly?
-    require_serial: true
 
     # Fun fact, clang-format can format more than just C and C++!
     #

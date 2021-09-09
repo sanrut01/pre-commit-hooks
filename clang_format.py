@@ -20,21 +20,13 @@ import sys
 import tempfile
 import urllib.request
 from pathlib import Path
-from typing import Final, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import Final, List, Mapping, Optional, Sequence, Tuple, Union
 
-# clang-format sha1s were retrieved at Chromium rev
-# 81cc23a856578b149a37dd109b147d8544f9cbd8.
-#
-# https://github.com/chromium/chromium/blob/master/buildtools/linux64/clang-format.sha1
-# https://github.com/chromium/chromium/blob/master/buildtools/mac/clang-format.sha1
-# https://github.com/chromium/chromium/blob/master/buildtools/win/clang-format.exe.sha1
+# clang-format sha1s were retrieved at
+#  https://commondatastorage.googleapis.com/chromium-clang-format/
+# The below shas are tested across different os to identify the version.
 
-CLANG_FORMAT_SHAS: Final[
-    Mapping[
-        Tuple[int, int, int],
-        Mapping[Union[Literal["Linux"], Literal["Darwin"], Literal["Windows"]], str],
-    ]
-] = {
+CLANG_FORMAT_SHAS: Final[Mapping[Tuple[int, int, int], Mapping[str, str],]] = {
     (3, 5, 0): {
         "Linux": "b26f74f07f51a99d79d34be57a28bc82dee42854",
         "Darwin": "ce0718a133a059aca5da5f307a36bbc310df3e12",
@@ -130,8 +122,7 @@ Expected {sha}, but was {d.hexdigest()}",
 
 def get_version_key(version: str) -> Tuple[int, int, int]:
     major, minor, patch = version.split(".")
-    v = (int(major), int(minor), int(patch))
-    return v
+    return (int(major), int(minor), int(patch))
 
 
 def clang_format_path(version: Tuple[int, int, int]) -> Path:
@@ -166,21 +157,21 @@ Learn more: https://github.com/jlebar/pre-commit-hooks
     return clang_format_file
 
 
+def get_version_list(
+    versionmap: Mapping[
+        Tuple[int, int, int],
+        Mapping[str, str],
+    ]
+) -> Tuple[str, ...]:
+    data = [tuple(map(str, tup)) for tup in versionmap.keys()]
+    return tuple([".".join(version) for version in data])
+
 
 def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
     parser = argparse.ArgumentParser(description="Arguments for pre commit.")
     parser.add_argument(
         "version",
-        choices=(
-            "3.5.0",
-            "3.6.0",
-            "3.7.0",
-            "3.9.0",
-            "4.0.0",
-            "5.0.0",
-            "8.0.0",
-            "11.0.0",
-        ),
+        choices=get_version_list(CLANG_FORMAT_SHAS),
         help="Clang format version to run",
     )
     parser.add_argument("scope", choices=["diff", "whole-file"], help="Run on files")
@@ -209,7 +200,8 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
                 f"{clang_format_path(get_version_key(args.version))}",
                 "--",
                 *args.files,
-            )
+            ),
+            check=True,
         )
     elif args.scope == "whole-file":
         print("Formatting all lines in " + " ".join(f"{args.files}"))
@@ -219,7 +211,8 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
                 "-i",
                 "--",
                 *args.files,
-            )
+            ),
+            check=True,
         )
 
 
