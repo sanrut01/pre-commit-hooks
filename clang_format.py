@@ -22,16 +22,11 @@ import urllib.request
 from pathlib import Path
 from typing import Final, Literal, Mapping, Optional, Sequence, Tuple, Union
 
-# clang-format sha1s were retrieved at  
+# clang-format sha1s were retrieved at
 #  https://commondatastorage.googleapis.com/chromium-clang-format/
 # The below shas are tested across different os to identify the version.
 
-CLANG_FORMAT_SHAS: Final[
-    Mapping[
-        Tuple[int, int, int],
-        Mapping[str, str],
-    ]
-] = {
+CLANG_FORMAT_SHAS: Final[Mapping[Tuple[int, int, int], Mapping[str, str],]] = {
     (3, 5, 0): {
         "Linux": "b26f74f07f51a99d79d34be57a28bc82dee42854",
         "Darwin": "ce0718a133a059aca5da5f307a36bbc310df3e12",
@@ -127,7 +122,7 @@ Expected {sha}, but was {d.hexdigest()}",
 
 def get_version_key(version: str) -> Tuple[int, int, int]:
     major, minor, patch = version.split(".")
-    return  (int(major), int(minor), int(patch))
+    return (int(major), int(minor), int(patch))
 
 
 def clang_format_path(version: Tuple[int, int, int]) -> Path:
@@ -160,7 +155,6 @@ Learn more: https://github.com/jlebar/pre-commit-hooks
 
     check_hash(clang_format_sha, clang_format_file)
     return clang_format_file
-
 
 
 def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
