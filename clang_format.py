@@ -199,7 +199,8 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
                 f"{clang_format_path(get_version_key(args.version))}",
                 "--",
                 *args.files,
-            )
+            ),
+            check=True,
         )
     elif args.scope == "whole-file":
         print("Formatting all lines in " + " ".join(f"{args.files}"))
@@ -209,7 +210,8 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:
                 "-i",
                 "--",
                 *args.files,
-            )
+            ),
+            check=True,
         )
 
 
