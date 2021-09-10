@@ -37,6 +37,7 @@ repos:
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
     hooks:
+      - id: python-check-blanket-type-ignore
       - id: python-use-type-annotations
       - id: python-check-mock-methods
       - id: python-check-blanket-noqa

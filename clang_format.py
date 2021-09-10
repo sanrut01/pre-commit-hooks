@@ -20,7 +20,7 @@ import sys
 import tempfile
 import urllib.request
 from pathlib import Path
-from typing import Final, Mapping, Optional, Sequence, Tuple, Union
+from typing import Final, Mapping, Optional, Sequence, Tuple
 
 # clang-format sha1s were retrieved at
 #  https://commondatastorage.googleapis.com/chromium-clang-format/
@@ -171,7 +171,7 @@ def get_version_list(
     return tuple([".".join(version) for version in data])
 
 
-def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:  # type: ignore
+def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="Arguments for pre commit.")
     parser.add_argument(
         "version",
@@ -195,7 +195,7 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:  # type: ign
     git_cf_path = os.path.join(this_dir, "git-clang-format")
     if args.scope == "diff":
         print("Formatting changed lines in " + " ".join(f"{args.files}"))
-        subprocess.run(
+        clang_run = subprocess.run(
             (
                 sys.executable,
                 git_cf_path,
@@ -209,7 +209,7 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:  # type: ign
         )
     elif args.scope == "whole-file":
         print("Formatting all lines in " + " ".join(f"{args.files}"))
-        subprocess.run(
+        clang_run = subprocess.run(
             (
                 f"{clang_format_path(get_version_key(args.version))}",
                 "-i",
@@ -218,6 +218,7 @@ def main(argv: Optional[Sequence[str]] = None) -> Union[int, None]:  # type: ign
             ),
             check=True,
         )
+    return clang_run.returncode
 
 
 if __name__ == "__main__":
